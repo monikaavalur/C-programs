@@ -29,6 +29,8 @@ void printList(struct node *ptr)
 //finding the median of the linked list
 void FindMedian(struct node *head)
 {
+     if(head==NULL)
+     printf("NULL");
      //creating two new structs
 	 struct node *previous_node = head;
 	 struct node *current_node = head;

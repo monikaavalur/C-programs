@@ -1,45 +1,65 @@
 #include<stdio.h>
 #include<stdlib.h>
-int main()
+void printLines()
 {
-     FILE *file_name; //assigning the file a name
-     char string[200]; //creating a string
-     int count=0, index, length;//declaring variables
-     file_name = fopen("sample.txt", "r");//opening the file
-     //checking whether the file exists!!
-     if(file_name==NULL)
+     char ch,ch1;
+     FILE *fp,*out,*fp1;
+     int length=0,length1=0,n,lines;
+     long count,last,last1;
+     
+     printf("Enter the number of lnes:");
+     scanf("%d",&n);
+     lines=n-1;
+     
+     out=fopen("output.txt","w");
+     fp=fopen("sample.txt","rb");
+     if(out==NULL||fp==NULL)
      {
-     	printf("File not found");
-     	return;
-	 }
-	 //inputting the number of lines to be displayed
-     printf("\nHow many lines to read from the end: ");
-	 scanf("%d", &length);
-	 //loop to count the number of lines
-     while(fgets(string, 200, file_name) != NULL)
-     count++;
-     index=0;
-     //rewinding the file
-     rewind(file_name);
-     //loop to traverse to the nth line of the file
-     while(index<count-length)
-     {	
-       fgets(string, 200, file_name);
-       index++;
-   }
-    
-    index=0;
-    //printing the last lines of the file
-    printf("\n last\n");
-    while(index<length)
-    {
-    	fgets(string, 200, file_name);
-    	printf("%s", string);
-    	index++;
-	}   
-	     //closing the file
-    fclose(file_name);
-    
-    return 0;
-}
-
+                            printf("Error can't open\n");
+                            exit(0);
+                            }
+                            fseek(fp,0,SEEK_END);
+                            last=ftell(fp);
+                            for(count=1;count<=last;count++)
+                            {
+                                                            fseek(fp,-count,SEEK_END);
+                                                            ch=getc(fp);
+                                                            if(ch=='\n')
+                                                            length++;
+                                                            if(length==n+1)
+                                                            break;
+                                                            if(ch!=EOF&&ch!='r')
+                                                            putc(ch,out);
+                                                            }
+                                                            fclose(out);
+                                                            fclose(fp);
+                                                            
+                                                            printf("\n");
+                                                            out=fopen("output.txt","r");
+                                                            if(out==NULL)
+                                                            {
+                                                                         printf("Error can't open\n");
+                                                                         exit(0);
+                                                                         }
+                                                                         fseek(out,0,SEEK_END);
+                                                                         last1=ftell(out);
+                                                                         for(count=1;count<=last;count++)
+                                                                         {
+                                                                                                         fseek(out,-count,SEEK_END);
+                                                                                                         ch1=getc(out);
+                                                                                                         if(ch1=='\n')
+                                                                                                         length1++;
+                                                                                                         if(length1==n+lines)
+                                                                                                         break;
+                                                                                                         if(ch1!=EOF&&ch1!='\r')
+                                                                                                         putchar(ch1);
+                                                                                                         }
+                                                                                                         fclose(out);
+                                                                                                         }
+                                                                                                         
+                                                            
+main()
+{
+      printLines();
+      }     
+     
